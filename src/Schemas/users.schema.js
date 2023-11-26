@@ -14,15 +14,15 @@ const validateRegister = zod.object({
     required_error: "Please select a date and time",
     invalid_type_error: "That's not a date!",
   }),
-  //Todo corregir el campo provice
-  province: zod.number(),
-  phone: zod
+
+  provincia: zod.number(),
+  telefono: zod
     .string({
       required_error: "Please telephone must be required",
       invalid_type_error: "That's not a string",
     })
     .min(9)
-    .max(12),
+    .max(15),
   email: zod
     .string({
       required_error: "Email is required",
@@ -37,19 +37,17 @@ const validateRegister = zod.object({
       invalid_type_error: "The password must be a string",
     })
     .min(6, { message: " Must be 6 or more characters long" }),
-  role: zod.enum(["students", "teachers", "admin"]),
-  longitude: zod.number({
-    required_error: "Longitude is required",
-    invalid_type_error: "Longitude must be a number",
-  }),
-  latitude: zod.number({
-    required_error: "Latitude is required",
-    invalid_type_error: "Latitude must be a number",
-  }),
+  rol: zod.enum(["Alumno", "Profesor", "admin"]),
+  longitude: zod.number().optional(),
+  latitude: zod.number().optional(),
 });
 
 function registerValidate(object) {
   return validateRegister.parseAsync(object);
 }
 
-module.exports = { registerValidate };
+function loginvalidate(object) {
+  return validateRegister.partial().parseAsync(object);
+}
+
+module.exports = { registerValidate, loginvalidate };
