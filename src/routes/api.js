@@ -5,4 +5,6 @@ router.use("/users", require("./api/users"));
 
 router.use("/webPublic", require("./api/webPublic"));
 
+router.use("/reviews", require("./api/reviews"));
+
 module.exports = router;
