@@ -9,8 +9,7 @@ app.use(express.json());
 // Montar las rutas de profesores
 app.use("/api", teachersRoutes);
 
-//Descomentar una vez se empiece a realizar la rutas.
-//app.use("/api", require("./routes/api"));
+app.use("/api", require("./routes/api"));
 
 app.use((req, res) => {
   res.status(404).json({ error: "Not fount" });

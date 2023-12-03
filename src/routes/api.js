@@ -1,19 +1,16 @@
-const express = require("express");
-const router = express.Router();
 
-// La ruta para obtener todos los profesores
-router.get("/getTeachers", async (req, res) => {
-  try {
-    // Realizar la consulta a la base de datos
-    const [teachers, fields] = await global.db.query("SELECT * FROM teachers");
+const router = require("express").Router();
+const middlewaresAuth = require("../middlewares/auth.middleware");
+const { checkRoleTeachers } = require("../middlewares/role.middleware");
 
-    // Enviar la lista de profesores como respuesta
-    res.json({ teachers });
-  } catch (error) {
-    // Manejar cualquier error que pueda ocurrir durante la consulta
-    console.error("Error al recuperar profesores:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-});
+router.use("/subjects", require("./api/subjects"));
+router.use("/users", require("./api/users"));
+
+router.use("/teachers", require("./api/teachers"));
+router.use("/tutor-control-panel", require("./api/tutor-control-panel"));
+
+router.use("/webPublic", require("./api/webPublic"));
+router.use('/teachers', require('./api/teachers'));
+
 
 module.exports = router;
