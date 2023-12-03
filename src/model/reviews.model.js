@@ -20,6 +20,22 @@ const insertReview = (
     );
 };
 
+//Esta función realiza una consulta para seleccionar todas las reviews de un tutor.
+const selectAllReviewsFromTutor = (tutorId) => {
+    return db.query(`
+    SELECT reviews.*, users.*
+    FROM reviews
+    JOIN users ON reviews.users_idusers = users.idusers
+    WHERE reviews.teachers_id_teachers = ?;
+`, [tutorId]);
+};
+
+const selectUserFromId = (userId) => {
+    return db.query("select * from users where idusers = ?", [userId]);
+};
+
 module.exports = {
-    insertReview
+    insertReview,
+    selectAllReviewsFromTutor,
+    selectUserFromId
 };
