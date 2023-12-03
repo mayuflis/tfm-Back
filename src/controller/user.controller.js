@@ -2,7 +2,7 @@ const ModelUser = require("../model/user.model");
 const bcrypt = require("bcryptjs");
 const SchemaUser = require("../Schemas/users.schema");
 const { createToken } = require("../helpers/util");
-
+const jsonWebToken = require("jsonwebtoken");
 //Realiza el registro de usuarios
 const register = async (req, res) => {
   try {
@@ -80,4 +80,16 @@ const getAllProvinces = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getAllProvinces };
+//Comprueba si el token recibido es válido
+const validateTokenFront = async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    const result = jsonWebToken.verify(token, process.env.SECRET_KEY);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(400).json({ fatal: error.message });
+  }
+};
+
+module.exports = { register, login, getAllProvinces, validateTokenFront };
