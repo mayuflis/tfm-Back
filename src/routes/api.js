@@ -22,4 +22,6 @@ router.use(
   require("./api/teachers")
 );
 
+router.use("/reviews", require("./api/reviews"));
+
 module.exports = router;
