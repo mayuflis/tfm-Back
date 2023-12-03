@@ -72,12 +72,18 @@ const login = async (req, res) => {
 };
 //Obtiene las provincias
 const getAllProvinces = async (req, res) => {
-  try {
+try {
     const [provinces] = await ModelUser.selectAllProvince();
     res.status(200).json(provinces);
   } catch (error) {
     res.status(400).json({ fatal: error.message });
   }
+
 };
 
+
 module.exports = { register, login, getAllProvinces };
+
+
+
+
