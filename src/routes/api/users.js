@@ -8,5 +8,6 @@ router.post("/register", UserController.register);
 router.post("/login", UserController.login);
 //Ruta para recuperar las provincias
 router.get("/province", UserController.getAllProvinces);
-
+//Validación edl token
+router.post("/validateToken", UserController.validateTokenFront);
 module.exports = router;
