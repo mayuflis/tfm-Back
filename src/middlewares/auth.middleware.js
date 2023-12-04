@@ -4,6 +4,7 @@ const UserModel = require("../model/user.model");
 //Función que comprueba que el usuario está logeado correctamente
 const checkToken = async (req, res, next) => {
   // Verifica si la solicitud tiene la cabecera "authorization"
+
   if (!req.headers["authorization"]) {
     return res
       .status(403)
@@ -23,7 +24,7 @@ const checkToken = async (req, res, next) => {
   const [user] = await UserModel.selectuserById(payload.user_id);
 
   // Almacena la información del usuario en el objeto de solicitud (req)
-  console.log(user);
+
   req.user = user;
 
   next();
