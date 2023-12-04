@@ -3,10 +3,7 @@ const router = require("express").Router();
 const middlewaresAuth = require("../middlewares/auth.middleware");
 const { checkRoleTeachers } = require("../middlewares/role.middleware");
 
-<<<<<<< HEAD
-=======
 router.use("/subjects", require("./api/subjects"));
->>>>>>> 2be0fd5b9236d27489914b9340e673e4690e7893
 router.use("/users", require("./api/users"));
 
 router.use("/teachers", require("./api/teachers"));
