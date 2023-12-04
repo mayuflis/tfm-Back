@@ -19,11 +19,12 @@ const getMyClassTeachers = async (req, res) => {
 
 const getSubjects = async (req, res) => {
   try {
-    const { idusers } = req.user[0];
-    const [subjects] = await ModelTeachers.selectSubjetsOfTeachers(
-      parseInt(idusers)
-    );
-    res.status(200).json(subjects);
+    //const { idusers } = req.user[0];
+    console.log("IDDD", req.user);
+    // const [subjects] = await ModelTeachers.selectSubjetsOfTeachers(
+    //   parseInt(idusers)
+    // );
+    // res.status(200).json(subjects);
   } catch (error) {
     res.status(400).json({ fatal: error.message });
   }

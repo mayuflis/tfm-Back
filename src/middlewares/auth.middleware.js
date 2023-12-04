@@ -23,6 +23,7 @@ const checkToken = async (req, res, next) => {
   const [user] = await UserModel.selectuserById(payload.user_id);
 
   // Almacena la información del usuario en el objeto de solicitud (req)
+  console.log(user);
   req.user = user;
 
   next();
