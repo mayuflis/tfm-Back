@@ -25,9 +25,10 @@ DROP TABLE IF EXISTS `class`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `class` (
+  `id_class` int NOT NULL AUTO_INCREMENT,
   `teachers_id_teachers` int NOT NULL,
   `users_idusers` int NOT NULL,
-  `idsubject` int NOT NULL,
+  `subjects_idsubject` int NOT NULL,
   `class date` date NOT NULL,
   `start_time` time DEFAULT NULL,
   `start_end` time DEFAULT NULL,
@@ -35,12 +36,24 @@ CREATE TABLE `class` (
   `level` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `date_contact` datetime DEFAULT NULL,
   `acceptance_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id_class`),
   KEY `fk_teachers_has_users_users1_idx` (`users_idusers`),
   KEY `fk_teachers_has_users_teachers1_idx` (`teachers_id_teachers`),
+  KEY `fk_teachers_has_user_subjects1_idx` (`subjects_idsubject`) /*!80000 INVISIBLE */,
+  CONSTRAINT `fk_teachers_has_users_subjects1` FOREIGN KEY (`subjects_idsubject`) REFERENCES `subjects` (`idsubjects`),
   CONSTRAINT `fk_teachers_has_users_teachers1` FOREIGN KEY (`teachers_id_teachers`) REFERENCES `teachers` (`id_teachers`),
   CONSTRAINT `fk_teachers_has_users_users1` FOREIGN KEY (`users_idusers`) REFERENCES `users` (`idusers`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `class`
+--
+
+LOCK TABLES `class` WRITE;
+/*!40000 ALTER TABLE `class` DISABLE KEYS */;
+/*!40000 ALTER TABLE `class` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `contacts`
@@ -54,8 +67,17 @@ CREATE TABLE `contacts` (
   `mobile` varchar(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `landline` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`idcontacts`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contacts`
+--
+
+LOCK TABLES `contacts` WRITE;
+/*!40000 ALTER TABLE `contacts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contacts` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `gender`
@@ -70,6 +92,16 @@ CREATE TABLE `gender` (
   PRIMARY KEY (`idGender`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gender`
+--
+
+LOCK TABLES `gender` WRITE;
+/*!40000 ALTER TABLE `gender` DISABLE KEYS */;
+INSERT INTO `gender` VALUES (1,'masculino'),(2,'femenino');
+/*!40000 ALTER TABLE `gender` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `province`
@@ -87,6 +119,16 @@ CREATE TABLE `province` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `province`
+--
+
+LOCK TABLES `province` WRITE;
+/*!40000 ALTER TABLE `province` DISABLE KEYS */;
+INSERT INTO `province` VALUES (39,'A coruña'),(46,'Álava'),(25,'Albacete'),(34,'Alicante'),(1,'Almería'),(12,'Asturias'),(17,'Ávila'),(37,'Badajoz'),(30,'Barcelona'),(47,'Bizkaia'),(18,'Burgos'),(38,'Cáceres'),(2,'Cádiz'),(16,'Cantabria'),(36,'Castellón'),(26,'Ciudad Real'),(3,'Córdoba'),(27,'Cuenca'),(31,'Girona'),(4,'Granada'),(28,'Guadalajara'),(48,'Guipúzcoa'),(5,'Huelva'),(9,'Huesca'),(13,'Illes Balears'),(6,'Jaen'),(49,'La Rioja'),(14,'Las Palmas'),(19,'León'),(32,'Lleida'),(40,'Lugo'),(43,'Madrid'),(7,'Málaga'),(44,'Murcia'),(45,'Navarra'),(41,'Ourense'),(20,'Palencia'),(42,'Pontevedra'),(21,'Salamanca'),(15,'Santa Cruz de Tenerife'),(22,'Segovia'),(8,'Sevilla'),(33,'Tarragona'),(10,'Terual'),(29,'Toledo'),(35,'Valencia'),(23,'Valladolid'),(24,'Zamora'),(11,'Zaragoza');
+/*!40000 ALTER TABLE `province` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `reviews`
 --
 
@@ -98,7 +140,7 @@ CREATE TABLE `reviews` (
   `opinions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `recommendations` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `teachers_id_teachers` int NOT NULL,
-  `rate` tinyint(1) DEFAULT NULL,
+  `rate` float DEFAULT NULL,
   `users_idusers` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -107,8 +149,17 @@ CREATE TABLE `reviews` (
   KEY `fk_reviews_users1_idx` (`users_idusers`),
   CONSTRAINT `fk_reviews_teachers1` FOREIGN KEY (`teachers_id_teachers`) REFERENCES `teachers` (`id_teachers`),
   CONSTRAINT `fk_reviews_users1` FOREIGN KEY (`users_idusers`) REFERENCES `users` (`idusers`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reviews`
+--
+
+LOCK TABLES `reviews` WRITE;
+/*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `subjects`
@@ -123,6 +174,16 @@ CREATE TABLE `subjects` (
   PRIMARY KEY (`idsubjects`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subjects`
+--
+
+LOCK TABLES `subjects` WRITE;
+/*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
+INSERT INTO `subjects` VALUES (1,'Matemáticas'),(2,'Lenguaje'),(3,'Inglés'),(4,'Programación'),(5,'Física'),(6,'Biología'),(7,'Química');
+/*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `teachers`
@@ -145,8 +206,17 @@ CREATE TABLE `teachers` (
   PRIMARY KEY (`id_teachers`),
   KEY `fk_teachers_users1_idx` (`users_idusers`),
   CONSTRAINT `fk_teachers_users1` FOREIGN KEY (`users_idusers`) REFERENCES `users` (`idusers`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `teachers`
+--
+
+LOCK TABLES `teachers` WRITE;
+/*!40000 ALTER TABLE `teachers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `teachers` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `teachers_has_subjects`
@@ -160,13 +230,22 @@ CREATE TABLE `teachers_has_subjects` (
   `subjects_idsubjects` int NOT NULL,
   `hourly_rate` tinyint DEFAULT NULL,
   `free_classl` tinyint DEFAULT NULL,
-  `level` tinyint(1) DEFAULT NULL,
+  `level` enum('Primaria','Secundaria','Bachillerato','Universidad') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   KEY `fk_teachers_has_subjects_subjects1_idx` (`subjects_idsubjects`),
   KEY `fk_teachers_has_subjects_teachers1_idx` (`teachers_id_teachers`),
   CONSTRAINT `fk_teachers_has_subjects_subjects1` FOREIGN KEY (`subjects_idsubjects`) REFERENCES `subjects` (`idsubjects`),
   CONSTRAINT `fk_teachers_has_subjects_teachers1` FOREIGN KEY (`teachers_id_teachers`) REFERENCES `teachers` (`id_teachers`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `teachers_has_subjects`
+--
+
+LOCK TABLES `teachers_has_subjects` WRITE;
+/*!40000 ALTER TABLE `teachers_has_subjects` DISABLE KEYS */;
+/*!40000 ALTER TABLE `teachers_has_subjects` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -202,8 +281,17 @@ CREATE TABLE `users` (
   CONSTRAINT `fk_users_contacts1` FOREIGN KEY (`contacts_idcontacts`) REFERENCES `contacts` (`idcontacts`),
   CONSTRAINT `fk_users_Gender1` FOREIGN KEY (`Gender_idGender`) REFERENCES `gender` (`idGender`),
   CONSTRAINT `fk_users_province1` FOREIGN KEY (`province_idprovince`) REFERENCES `province` (`idprovince`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -283,4 +371,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-12-03 22:16:57
+-- Dump completed on 2023-12-04 22:38:34
