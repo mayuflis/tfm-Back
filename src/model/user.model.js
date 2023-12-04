@@ -47,10 +47,48 @@ const selectEmailOfUser = (email) => {
 const selectAllProvince = () => {
   return db.query("select * from province");
 };
+
+/*const getTeacherByUserId = (userId) => {
+  return db.query(`SELECT name, last_name, email
+  FROM users
+  WHERE idusers = (SELECT users_idusers
+  FROM teachers
+  WHERE id_teachers = (
+      SELECT teachers_id_teachers
+      FROM class
+      WHERE users_idusers = ?)
+  )`, [userId]
+ 
+  );
+};*/
+
+const getTeacherByUserId = (userId) => {
+  return db.query(`
+    SELECT u.name, u.last_name, u.email, c.mobile
+    FROM users AS u
+    INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+    WHERE u.idusers = (
+      SELECT users_idusers
+      FROM teachers
+      WHERE id_teachers = (
+        SELECT teachers_id_teachers
+        FROM class
+        WHERE users_idusers = ?
+      )
+    )
+  `, [userId]);
+};
+
+const getUserById = (userId) => {
+  return db.query('SELECT * FROM users WHERE idusers = ?', [userId]);
+};
+
 module.exports = {
+  getTeacherByUserId,
   insertUser,
   selectuserById,
   insertPhoneOfRegister,
   selectEmailOfUser,
   selectAllProvince,
+  getUserById
 };

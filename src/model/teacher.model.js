@@ -1,3 +1,9 @@
+
+
+const getUsersByTeacherId = (teacherId) => {
+  return db.query('SELECT users_idusers FROM class WHERE teachers_id_teachers = ?', [teacherId]);
+};
+
 const selectStudetnsBySubjects = (idUsers, idSubject) => {
   return db.query(
     "select count(c.users_idusers) as NumberOfStudents  from class as c join teachers as t on t.id_teachers= c.teachers_id_teachers join users as u on u.idusers=t.users_idusers where u.idusers=? and c.subjects_idsubject=?",
@@ -20,15 +26,16 @@ const getUsersByTeacherId = (teacherId) => {
 };
 
 const getUsersInfoByTeacherId = (teacherId) => {
-  return db.query(
-    `
-    SELECT name, last_name, email
-    FROM users
-    INNER JOIN teachers_has_users ON users.idusers = teachers_has_users.users_idusers
-    WHERE teachers_has_users.teachers_id_teachers = ?`,
-    [teacherId]
-  );
+return db.query(`
+SELECT u.name, u.last_name, u.email, c.mobile
+FROM users AS u
+INNER JOIN class AS cl ON u.idusers = cl.users_idusers
+INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+WHERE cl.teachers_id_teachers = ?`,
+[teacherId]
+);
 };
+
 
 //Consulta a la BBDD para obtener todos los profesores
 const selectAllTeachers = () => {
@@ -40,6 +47,7 @@ const selectTeacherById = (teacherId) => {
   return db.query("select * from teachers where id_teachers= ?", [teacherId]);
 };
 
+
 module.exports = {
   selectAllTeachers,
   selectTeacherById,
@@ -48,3 +56,4 @@ module.exports = {
   selectStudetnsBySubjects,
   selectSubjetsOfTeachers,
 };
+
