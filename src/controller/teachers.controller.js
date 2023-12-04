@@ -49,6 +49,12 @@ const getUsersByTeacherId = async (req, res) => {
   }
 };
 
+
+
+
+
+/////////////////////////////////////////////////
+
 const getUsersInfoByTeacherId = async (req, res) => {
   const { teacherId } = req.params;
 
@@ -65,6 +71,12 @@ const getUsersInfoByTeacherId = async (req, res) => {
   }
 };
 
+
+
+
+//////////////////////////
+
+
 const getAllTeachers = async (req, res) => {
   try {
     const [teachers] = await TeacherModel.selectAllTeachers();
@@ -75,13 +87,16 @@ const getAllTeachers = async (req, res) => {
 };
 
 const getTeacherById = async (req, res) => {
-  try {
-    const { teacherId } = req.params;
-    const [teacher] = await TeacherModel.selectTeacherById(teacherId);
-    res.json(teacher);
-  } catch (error) {
-    res.json({ fatal: error.message });
-  }
+    try {
+        const { teacherId } = req.params
+        const [teacher] = await TeacherModel.selectTeacherById(teacherId)
+        res.json(teacher)
+    } catch (error) {
+        res.json({ fatal: error.message })
+    }
+
+}
+
 };
 
 module.exports = {
