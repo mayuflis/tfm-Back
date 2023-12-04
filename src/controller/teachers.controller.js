@@ -16,7 +16,7 @@ const getUsersByTeacherId = async (req, res) => {
   }
 };
 
-module.exports = { getUsersByTeacherId };
+
 
 
 /////////////////////////////////////////////////
@@ -34,7 +34,7 @@ const getUsersInfoByTeacherId = async (req, res) => {
   }
 };
 
-module.exports = { getUsersInfoByTeacherId };
+
 
 //////////////////////////
 
@@ -60,5 +60,10 @@ const getTeacherById = async (req, res) => {
 
 
 
-module.exports = { getAllTeachers, getTeacherById }
+module.exports = {
+  getUsersByTeacherId,
+  getUsersInfoByTeacherId,
+  getAllTeachers,
+  getTeacherById
+};
 

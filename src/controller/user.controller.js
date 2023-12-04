@@ -2,6 +2,7 @@ const ModelUser = require("../model/user.model");
 const bcrypt = require("bcryptjs");
 const SchemaUser = require("../Schemas/users.schema");
 const { createToken } = require("../helpers/util");
+const UsersModel = require('../model/user.model');
 
 //Realiza el registro de usuarios
 const register = async (req, res) => {
@@ -81,8 +82,34 @@ try {
 
 };
 
+const getTeacherByUserId = async (req, res) => {
+  const { userId } = req.params;
 
-module.exports = { register, login, getAllProvinces };
+  try {
+    const [teacherInfo] = await UsersModel.getTeacherByUserId(userId);
+
+    res.json(teacherInfo);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error al obtener la información del profesor asociado al usuario.' });
+  }
+};
+
+const getUserById = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const [user] = await UsersModel.getUserById(userId);
+    res.json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving user data.' });
+  }
+};
+
+
+module.exports = { register, login, getAllProvinces, getTeacherByUserId, getUserById };
+
 
 
 
