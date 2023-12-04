@@ -14,4 +14,6 @@ router.get('/:userId/teacher-info', usersController.getTeacherByUserId);
 //Ruta para obtener los datos de usuario
 router.get('/:userId', usersController.getUserById);
 
+//Validación edl token
+router.post("/validateToken", UserController.validateTokenFront);
 module.exports = router;
