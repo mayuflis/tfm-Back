@@ -35,13 +35,24 @@ const insertUser = (
 const selectuserById = (idUser) => {
   return db.query("select * from users where idusers= ?", [idUser]);
 };
+
+const selectPhone = (telefono) => {
+  return db.query(
+    "SELECT idcontacts FROM appteacher3.contacts where mobile=? ",
+    [telefono]
+  );
+};
+
 //Esta función realiza la inserción de un nuevo número de teléfono en la tabla de contactos durante el proceso de registro.
-const insertPhoneOfRegister = ({ phone }) => {
+const insertPhoneOfRegister = (phone) => {
   return db.query("insert into contacts (mobile) values (?)", [phone]);
 };
 //Esta función realiza una consulta para seleccionar un usuario basado en su dirección de correo electrónico.
 const selectEmailOfUser = (email) => {
   return db.query("select * from users where email = ?", email);
+};
+const selectEmailToIdUsers = (email) => {
+  return db.query("select idusers from users where email = ?", email);
 };
 //Función que realiza una consulta para obtener las provincias
 const selectAllProvince = () => {
@@ -63,7 +74,8 @@ const selectAllProvince = () => {
 };*/
 
 const getTeacherByUserId = (userId) => {
-  return db.query(`
+  return db.query(
+    `
     SELECT u.name, u.last_name, u.email, c.mobile
     FROM users AS u
     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
@@ -76,11 +88,13 @@ const getTeacherByUserId = (userId) => {
         WHERE users_idusers = ?
       )
     )
-  `, [userId]);
+  `,
+    [userId]
+  );
 };
 
 const getUserById = (userId) => {
-  return db.query('SELECT * FROM users WHERE idusers = ?', [userId]);
+  return db.query("SELECT * FROM users WHERE idusers = ?", [userId]);
 };
 
 module.exports = {
@@ -90,5 +104,7 @@ module.exports = {
   insertPhoneOfRegister,
   selectEmailOfUser,
   selectAllProvince,
-  getUserById
+  getUserById,
+  selectPhone,
+  selectEmailToIdUsers,
 };

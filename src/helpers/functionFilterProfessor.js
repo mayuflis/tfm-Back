@@ -11,9 +11,10 @@ const filterProfessor = (
   selectedPrice = parseInt(selectedPrice);
   selectedExperience = parseInt(selectedExperience);
   let filtrado = [];
+  let idUnico = {};
   if (selectedProvince != 0) {
-    filtrado = teachers.filter((provincias) => {
-      return provincias.province_idprovince === selectedProvince;
+    filtrado = teachers.filter((teacher) => {
+      return teacher.province_idprovince === selectedProvince;
     });
   } else {
     filtrado = teachers;
@@ -40,6 +41,14 @@ const filterProfessor = (
       if (teachers.rate) return teachers.rate >= minRating;
     });
   }
+  filtrado = filtrado.filter((teacher) => {
+    if (!idUnico[teacher.idusers]) {
+      idUnico[teacher.idusers] = true;
+
+      return true;
+    }
+    return false;
+  });
 
   return filtrado;
 };

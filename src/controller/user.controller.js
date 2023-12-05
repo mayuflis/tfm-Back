@@ -2,7 +2,7 @@ const ModelUser = require("../model/user.model");
 const bcrypt = require("bcryptjs");
 const SchemaUser = require("../Schemas/users.schema");
 const { createToken } = require("../helpers/util");
-const UsersModel = require('../model/user.model');
+const UsersModel = require("../model/user.model");
 
 const jsonWebToken = require("jsonwebtoken");
 //Realiza el registro de usuarios
@@ -28,8 +28,22 @@ const register = async (req, res) => {
       });
     }
 
+    //Comprobación si existe el téfono en la tabla
+    const id = await ModelUser.selectPhone(req.body.telefono);
+    //Comprobación de si existe el correo en la tabla
+    const [idUsers] = await ModelUser.selectEmailToIdUsers(req.body.email);
+
+    //Si el télfono se encuentra en la tabla contacts lanza el siguiente error
+    if (id[0].length !== 0) {
+      return res.status(400).json({ fatal: "Telefono repetido" });
+    }
+    //Si el email existe en la tabla email lanzará el siguiente error
+    if (idUsers.length !== 0) {
+      return res.status(400).json({ fatal: "Email repetido" });
+    }
     //Se inserta el teléfono en la tabla contactos
-    const [phone] = await ModelUser.insertPhoneOfRegister(req.body);
+    const [phone] = await ModelUser.insertPhoneOfRegister(req.body.telefono);
+
     //Inserción del usuario en la tabla usuario
     const [result] = await ModelUser.insertUser(req.body, phone.insertId);
     //Devuelve los datos del usuario
@@ -68,14 +82,16 @@ const login = async (req, res) => {
       succes: true,
       token: createToken(user[0]),
     });
+    // Manejar cualquier error durante el proceso y devolver un mensaje de error al cliente
   } catch (error) {
-    res.status(400).json({ fatal: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 //Obtiene las provincias
 const getAllProvinces = async (req, res) => {
   try {
     const [provinces] = await ModelUser.selectAllProvince();
+
     res.status(200).json(provinces);
   } catch (error) {
     res.status(400).json({ fatal: error.message });
@@ -91,7 +107,10 @@ const getTeacherByUserId = async (req, res) => {
     res.json(teacherInfo);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error al obtener la información del profesor asociado al usuario.' });
+    res.status(500).json({
+      message:
+        "Error al obtener la información del profesor asociado al usuario.",
+    });
   }
 };
 
@@ -103,12 +122,9 @@ const getUserById = async (req, res) => {
     res.json(user);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Error retrieving user data.' });
+    res.status(500).json({ message: "Error retrieving user data." });
   }
 };
-
-
-
 
 //Comprueba si el token recibido es válido
 const validateTokenFront = async (req, res) => {
@@ -122,4 +138,11 @@ const validateTokenFront = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getAllProvinces, getTeacherByUserId, getUserById, validateTokenFront };
+module.exports = {
+  register,
+  login,
+  getAllProvinces,
+  getTeacherByUserId,
+  getUserById,
+  validateTokenFront,
+};
