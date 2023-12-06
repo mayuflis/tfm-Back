@@ -9,7 +9,7 @@ const getAllTeachers = () => {
       "left join teachers_has_subjects as ths on ths.teachers_id_teachers=t.id_teachers " +
       "left join subjects as s on s.idsubjects=ths.subjects_idsubjects " +
       "left join reviews as r on r.teachers_id_teachers=t.id_teachers " +
-      "where u.role='Profesor' and t.validate=1"
+      "where u.role='teacher' and t.validate=1"
   );
 };
 
