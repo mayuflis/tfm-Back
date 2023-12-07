@@ -74,22 +74,65 @@ const selectAllProvince = () => {
 };*/
 
 const getTeacherByUserId = (userId) => {
+  userId = parseInt(userId);
+  console.log(userId);
   return db.query(
     `
-    SELECT u.name, u.last_name, u.email, c.mobile
-    FROM users AS u
-    INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
-    WHERE u.idusers = (
-      SELECT users_idusers
-      FROM teachers
-      WHERE id_teachers = (
-        SELECT teachers_id_teachers
-        FROM class
-        WHERE users_idusers = ?
-      )
-    )
+SELECT
+    (SELECT subjects.name
+     FROM subjects
+     JOIN class AS cl_subject ON cl_subject.subjects_idsubject = subjects.idsubjects
+     WHERE cl_subject.users_idusers = ?) AS subject_name,
+    (SELECT u.name
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS user_name,
+    (SELECT u.last_name
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS last_name,
+    (SELECT u.email
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS email,
+    (SELECT c.mobile
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS mobile;
   `,
-    [userId]
+    [userId, userId, userId, userId, userId]
   );
 };
 

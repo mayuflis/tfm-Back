@@ -5,7 +5,7 @@ const filterHome = (
   selectedExperience,
   minRating
 ) => {
-    console.log(selectedProvince)
+  console.log(selectedProvince);
   return db.query(
     `
       SELECT
@@ -65,12 +65,12 @@ const filterHome = (
       selectedProvince,
       selectedProvince,
       selectedProvince,
-      selectedPrice,
-      selectedPrice,
-      selectedPrice,
       selectedExperience,
       selectedExperience,
       selectedExperience,
+      selectedPrice,
+      selectedPrice,
+      selectedPrice,
       minRating,
       minRating,
       minRating,
@@ -79,5 +79,5 @@ const filterHome = (
 };
 
 module.exports = {
-  filterHome
+  filterHome,
 };

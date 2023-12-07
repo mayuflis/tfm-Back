@@ -29,10 +29,9 @@ const postFilterHome = async (req, res) => {
       selectedExperience,
       minRating
     );
-      res.status(200).json(filter);
-    
+    res.status(200).json(filter);
   } catch (error) {
-      res.status(400).json({ fatal: error });
+    res.status(400).json({ fatal: error });
   }
 };
 
