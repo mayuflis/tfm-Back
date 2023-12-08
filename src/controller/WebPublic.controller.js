@@ -21,6 +21,7 @@ const getFilterTeachers = async (req, res) => {
       selectedExperience,
       minRating,
     } = req.body;
+
     //Obtención ed todos lo profesores validados
     const [teachers] = await ModelWebPublic.getAllTeachers();
     //Método que realiza el filtrado y devuelve  aquellos profesores en función de los parámetros aplicados en el filtro

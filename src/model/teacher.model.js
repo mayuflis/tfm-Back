@@ -36,6 +36,105 @@ const selectAllTeachers = () => {
   return db.query("select * from teachers");
 };
 
+//Necessary info for card component and ubication
+const selectInfoTeachersFromUsers = () => {
+  return db.query(`
+        SELECT
+            u.idusers, u.name, u.last_name, u.email, u.role,
+            u.latitude, u.longitude, u.birthday,
+            u.image, p.name_province, t.description_prof,
+            t.title_prof, t.description_class, t.experience,
+            JSON_ARRAYAGG(JSON_OBJECT(
+                "subject_name", s.name,
+                "level", ths.level,
+                "free_class", ths.free_classl
+            )) AS arraySubjects,
+            JSON_OBJECT(
+                "rate", ROUND(AVG(reviews.rate), 1),
+                "num_reviews", SUM(reviews.num_reviews)
+            ) AS reviews
+        FROM
+            users u
+        JOIN
+            province p ON u.province_idprovince = p.idprovince
+        JOIN
+            teachers t ON u.idusers = t.users_idusers
+        JOIN
+            teachers_has_subjects ths ON t.id_teachers = ths.teachers_id_teachers
+        JOIN
+            subjects s ON ths.subjects_idsubjects = s.idsubjects
+        LEFT JOIN (
+            SELECT
+                teachers_id_teachers,
+                rate,
+                COUNT(id_reviews) AS num_reviews
+            FROM
+                reviews
+            GROUP BY
+                teachers_id_teachers, rate
+        ) AS reviews ON t.id_teachers = reviews.teachers_id_teachers
+        WHERE
+            u.role = "teacher"
+            and
+            t.validate = 1
+        GROUP BY
+            u.idusers, u.name, u.email, u.role,
+            u.latitude, u.longitude, u.birthday, u.image,
+            p.name_province, t.description_prof,
+            t.title_prof, t.description_class, t.experience
+        ORDER BY
+            ROUND(AVG(reviews.rate), 1) DESC;  
+    `);
+};
+
+const selectInfoTeacherById = (teacherId) => {
+  return db.query(
+    `SELECT
+    u.idusers, u.name, u.last_name, u.email, u.role,
+    u.latitude, u.longitude, u.birthday,
+    u.image, p.name_province, t.description_prof,
+    t.title_prof, t.description_class, t.experience,
+    JSON_ARRAYAGG(JSON_OBJECT(
+        "subject_name", s.name,
+        "level", ths.level,
+        "free_class", ths.free_classl
+    )) AS arraySubjects,
+    JSON_OBJECT(
+        "rate", ROUND(AVG(reviews.rate), 1),
+        "num_reviews", SUM(reviews.num_reviews)
+    ) AS reviews
+FROM
+    users u
+JOIN
+    province p ON u.province_idprovince = p.idprovince
+JOIN
+    teachers t ON u.idusers = t.users_idusers
+JOIN
+    teachers_has_subjects ths ON t.id_teachers = ths.teachers_id_teachers
+JOIN
+    subjects s ON ths.subjects_idsubjects = s.idsubjects
+LEFT JOIN (
+    SELECT
+        teachers_id_teachers,
+        rate,
+        COUNT(id_reviews) AS num_reviews
+    FROM
+        reviews
+    GROUP BY
+        teachers_id_teachers, rate
+) AS reviews ON t.id_teachers = reviews.teachers_id_teachers
+WHERE
+    u.role = "teacher" AND u.idusers=?
+GROUP BY
+    u.idusers, u.name, u.email, u.role,
+    u.latitude, u.longitude, u.birthday, u.image,
+    p.name_province, t.description_prof,
+    t.title_prof, t.description_class, t.experience;
+`,
+    [teacherId]
+  );
+};
+
 //Consulta a la BBDD para obtener un profesor por ID
 const selectTeacherById = (teacherId) => {
   return db.query("select * from teachers where id_teachers= ?", [teacherId]);
@@ -48,4 +147,6 @@ module.exports = {
   getUsersByTeacherId,
   selectStudetnsBySubjects,
   selectSubjetsOfTeachers,
+  selectInfoTeachersFromUsers,
+  selectInfoTeacherById,
 };

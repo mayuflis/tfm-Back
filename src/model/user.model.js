@@ -35,13 +35,24 @@ const insertUser = (
 const selectuserById = (idUser) => {
   return db.query("select * from users where idusers= ?", [idUser]);
 };
+
+const selectPhone = (telefono) => {
+  return db.query(
+    "SELECT idcontacts FROM appteacher3.contacts where mobile=? ",
+    [telefono]
+  );
+};
+
 //Esta función realiza la inserción de un nuevo número de teléfono en la tabla de contactos durante el proceso de registro.
-const insertPhoneOfRegister = ({ phone }) => {
+const insertPhoneOfRegister = (phone) => {
   return db.query("insert into contacts (mobile) values (?)", [phone]);
 };
 //Esta función realiza una consulta para seleccionar un usuario basado en su dirección de correo electrónico.
 const selectEmailOfUser = (email) => {
   return db.query("select * from users where email = ?", email);
+};
+const selectEmailToIdUsers = (email) => {
+  return db.query("select idusers from users where email = ?", email);
 };
 //Función que realiza una consulta para obtener las provincias
 const selectAllProvince = () => {
@@ -63,24 +74,70 @@ const selectAllProvince = () => {
 };*/
 
 const getTeacherByUserId = (userId) => {
-  return db.query(`
-    SELECT u.name, u.last_name, u.email, c.mobile
-    FROM users AS u
-    INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
-    WHERE u.idusers = (
-      SELECT users_idusers
-      FROM teachers
-      WHERE id_teachers = (
-        SELECT teachers_id_teachers
-        FROM class
-        WHERE users_idusers = ?
-      )
-    )
-  `, [userId]);
+  userId = parseInt(userId);
+  console.log(userId);
+  return db.query(
+    `
+SELECT
+    (SELECT subjects.name
+     FROM subjects
+     JOIN class AS cl_subject ON cl_subject.subjects_idsubject = subjects.idsubjects
+     WHERE cl_subject.users_idusers = ?) AS subject_name,
+    (SELECT u.name
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS user_name,
+    (SELECT u.last_name
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS last_name,
+    (SELECT u.email
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS email,
+    (SELECT c.mobile
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS mobile;
+  `,
+    [userId, userId, userId, userId, userId]
+  );
 };
 
 const getUserById = (userId) => {
-  return db.query('SELECT * FROM users WHERE idusers = ?', [userId]);
+  return db.query("SELECT * FROM users WHERE idusers = ?", [userId]);
 };
 
 module.exports = {
@@ -90,5 +147,7 @@ module.exports = {
   insertPhoneOfRegister,
   selectEmailOfUser,
   selectAllProvince,
-  getUserById
+  getUserById,
+  selectPhone,
+  selectEmailToIdUsers,
 };
