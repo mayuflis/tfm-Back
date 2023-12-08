@@ -138,6 +138,16 @@ const validateTokenFront = async (req, res) => {
   }
 };
 
+const getBasicProfileInfo = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const [user] = await ModelUser.selectBasicProfileInfo(userId)
+    res.json(user[0])
+  } catch (error) {
+    res.json({ fatal: error.message })
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -145,4 +155,5 @@ module.exports = {
   getTeacherByUserId,
   getUserById,
   validateTokenFront,
+  getBasicProfileInfo
 };

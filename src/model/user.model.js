@@ -140,6 +140,15 @@ const getUserById = (userId) => {
   return db.query("SELECT * FROM users WHERE idusers = ?", [userId]);
 };
 
+const selectBasicProfileInfo = (userId) => {
+  return db.query(`SELECT users.name, users.last_name, users.birthday, users.image, province.name_province, contacts.mobile, gender.gender
+  FROM users
+  JOIN province ON users.province_idprovince = province.idprovince
+  JOIN contacts ON users.contacts_idcontacts = contacts.idcontacts
+  JOIN gender ON users.Gender_idGender = gender.idGender
+  WHERE idusers = ?`, [userId])
+}
+
 module.exports = {
   getTeacherByUserId,
   insertUser,
@@ -150,4 +159,5 @@ module.exports = {
   getUserById,
   selectPhone,
   selectEmailToIdUsers,
+  selectBasicProfileInfo
 };
