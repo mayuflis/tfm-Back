@@ -140,6 +140,20 @@ const selectTeacherById = (teacherId) => {
   return db.query("select * from teachers where id_teachers= ?", [teacherId]);
 };
 
+const selectListOfClass = (idUser) => {
+  return db.query(
+    `
+select  us.idusers,us.name,us.last_name,s.name as subject,us.email,c.mobile,cl.class_date,cl.start_time from users as u
+join teachers as t on t.users_idusers=u.idusers
+join class as cl on cl.teachers_id_teachers=t.id_teachers
+join users as us on us.idusers=cl.users_idusers
+join contacts as c on c.idcontacts=us.contacts_idcontacts
+join subjects as s on s.idsubjects=cl.subjects_idsubject
+where u.idusers=?`,
+    [idUser]
+  );
+};
+
 module.exports = {
   selectAllTeachers,
   selectTeacherById,
@@ -149,4 +163,5 @@ module.exports = {
   selectSubjetsOfTeachers,
   selectInfoTeachersFromUsers,
   selectInfoTeacherById,
+  selectListOfClass,
 };

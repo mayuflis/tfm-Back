@@ -78,7 +78,7 @@ const getTeacherByUserId = (userId) => {
   console.log(userId);
   return db.query(
     `
-SELECT
+    SELECT
     (SELECT subjects.name
      FROM subjects
      JOIN class AS cl_subject ON cl_subject.subjects_idsubject = subjects.idsubjects
@@ -92,9 +92,21 @@ SELECT
          WHERE id_teachers = (
              SELECT teachers_id_teachers
              FROM class
-             WHERE users_idusers = ?
+             WHERE users_idusers =?
          )
      )) AS user_name,
+         (SELECT u.idusers
+     FROM users AS u
+     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+     WHERE u.idusers = (
+         SELECT users_idusers
+         FROM teachers
+         WHERE id_teachers = (
+             SELECT teachers_id_teachers
+             FROM class
+             WHERE users_idusers = ?
+         )
+     )) AS idusers,
     (SELECT u.last_name
      FROM users AS u
      INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
@@ -130,24 +142,32 @@ SELECT
              FROM class
              WHERE users_idusers = ?
          )
-     )) AS mobile;
+     )) AS mobile
   `,
-    [userId, userId, userId, userId, userId]
+    [userId, userId, userId, userId, userId, userId]
   );
 };
 
 const getUserById = (userId) => {
-  return db.query("SELECT * FROM users WHERE idusers = ?", [userId]);
+  return db.query(
+    `SELECT * FROM users as u
+    join province as p on p.idprovince =u.province_idprovince
+    WHERE idusers  = ?`,
+    [userId]
+  );
 };
 
 const selectBasicProfileInfo = (userId) => {
-  return db.query(`SELECT users.name, users.last_name, users.birthday, users.image, province.name_province, contacts.mobile, gender.gender
+  return db.query(
+    `SELECT users.name, users.last_name, users.birthday, users.image, province.name_province, contacts.mobile, gender.gender
   FROM users
   JOIN province ON users.province_idprovince = province.idprovince
   JOIN contacts ON users.contacts_idcontacts = contacts.idcontacts
   JOIN gender ON users.Gender_idGender = gender.idGender
-  WHERE idusers = ?`, [userId])
-}
+  WHERE idusers = ?`,
+    [userId]
+  );
+};
 
 module.exports = {
   getTeacherByUserId,
@@ -159,5 +179,5 @@ module.exports = {
   getUserById,
   selectPhone,
   selectEmailToIdUsers,
-  selectBasicProfileInfo
+  selectBasicProfileInfo,
 };
