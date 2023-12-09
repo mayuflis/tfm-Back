@@ -169,6 +169,34 @@ const selectBasicProfileInfo = (userId) => {
   );
 };
 
+const updateUserById = (userId, { name, last_name, birthday, image, name_province, mobile, gender }) => {
+  `UPDATE users
+  SET
+  users.name = ?,
+    users.last_name = ?,
+    users.birthday = ?,
+    users.image = ?,
+    province_idprovince = (
+      SELECT idprovince
+    FROM province
+    WHERE name_province = ?
+  ),
+contacts_idcontacts = (
+  SELECT idcontacts
+    FROM contacts
+    WHERE mobile = ?
+  ),
+gender_idgender = (
+  SELECT idgender
+    FROM gender
+    WHERE gender = ?
+  )
+WHERE idusers = ?;`, [name, last_name, birthday, image, name_province, mobile, gender, userId]
+
+
+
+}
+
 module.exports = {
   getTeacherByUserId,
   insertUser,
@@ -180,4 +208,5 @@ module.exports = {
   selectPhone,
   selectEmailToIdUsers,
   selectBasicProfileInfo,
+  updateUserById
 };

@@ -148,6 +148,17 @@ const getBasicProfileInfo = async (req, res) => {
   }
 }
 
+const updateUser = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const [updatedUser] = await ModelUser.updateUserById(userId, req.body)
+    console.log(req.body)
+    res.json(updatedUser);  // Imprime la respuesta en la consola para verificar el formato
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -155,5 +166,6 @@ module.exports = {
   getTeacherByUserId,
   getUserById,
   validateTokenFront,
-  getBasicProfileInfo
+  getBasicProfileInfo,
+  updateUser
 };
