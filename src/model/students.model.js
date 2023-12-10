@@ -14,9 +14,16 @@ const selectStudentsDescriptions = (idUsers) => {
     `SELECT sd.idStudentsDecriptions,sd.aboutMe,sd.myInterests,sd.users_idusers,u.name
     FROM studentsdecriptions as sd
     join users as u on u.idusers=sd.users_idusers
-    where u.idusers`,
+    where u.idusers=?`,
     [idUsers]
   );
 };
 
-module.exports = { selectSubjectStudents, selectStudentsDescriptions };
+const selectStudentsById = (idUser) => {
+  return db.query(`select users.name from users where idusers=?`, [idUser]);
+};
+module.exports = {
+  selectSubjectStudents,
+  selectStudentsDescriptions,
+  selectStudentsById,
+};

@@ -6,5 +6,6 @@ router.get(
   "/studentDescription/:idUsers",
   ControllerStudents.getStudentsDescriptions
 );
+router.get("/getName/:idUser", ControllerStudents.getNameStudents);
 
 module.exports = router;
