@@ -10,4 +10,14 @@ const getSubjectOfStudent = async (req, res) => {
   }
 };
 
-module.exports = { getSubjectOfStudent };
+const getStudentsDescriptions = async (req, res) => {
+  try {
+    const { idUsers } = req.params;
+    const [students] = await ModelStudents.selectStudentsDescriptions(idUsers);
+    res.status(200).json(students);
+  } catch (error) {
+    res.status(400).json({ fatal: error.message });
+  }
+};
+
+module.exports = { getSubjectOfStudent, getStudentsDescriptions };

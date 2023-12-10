@@ -138,6 +138,27 @@ const validateTokenFront = async (req, res) => {
   }
 };
 
+const getBasicProfileInfo = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const [user] = await ModelUser.selectBasicProfileInfo(userId)
+    res.json(user[0])
+  } catch (error) {
+    res.json({ fatal: error.message })
+  }
+}
+
+const updateUser = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const [updatedUser] = await ModelUser.updateUserById(userId, req.body)
+    console.log(req.body)
+    res.json(updatedUser);  // Imprime la respuesta en la consola para verificar el formato
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -145,4 +166,6 @@ module.exports = {
   getTeacherByUserId,
   getUserById,
   validateTokenFront,
+  getBasicProfileInfo,
+  updateUser
 };

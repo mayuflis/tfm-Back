@@ -13,7 +13,11 @@ router.get("/province", UserController.getAllProvinces);
 router.get('/:userId/teacher-info', usersController.getTeacherByUserId);
 //Ruta para obtener los datos de usuario
 router.get('/:userId', usersController.getUserById);
+//Ruta para obtener informacion del perfil
+router.get('/myprofile/:userId', usersController.getBasicProfileInfo);
+//Ruta para editar el perfil
+router.put('/profile/:userId', usersController.updateUser);
 
-//Validación edl token
+//Validación del token
 router.post("/validateToken", UserController.validateTokenFront);
 module.exports = router;
