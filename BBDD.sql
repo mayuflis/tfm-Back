@@ -137,6 +137,7 @@ DROP TABLE IF EXISTS `reviews`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reviews` (
   `id_reviews` int NOT NULL AUTO_INCREMENT,
+  `title_opinion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `opinions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `recommendations` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `teachers_id_teachers` int NOT NULL,

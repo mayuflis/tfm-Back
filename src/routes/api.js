@@ -16,13 +16,13 @@ router.use("/webPublic", require("./api/webPublic"));
 
 router.use("/students", middlewaresAuth.checkToken, checkRoleStudents, require("./api/Students/students") );
 
+router.use("/reviews", require("./api/reviews"));
+
 router.use(
   "/teachers",
   middlewaresAuth.checkToken,
   checkRoleTeachers,
   require("./api/teachers")
 );
-
-router.use("/reviews", require("./api/reviews"));
 
 module.exports = router;

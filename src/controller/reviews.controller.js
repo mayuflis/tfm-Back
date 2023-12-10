@@ -28,5 +28,14 @@ const getUserFromId = async (req, res) => {
     }
 };
 
+const checkReviewFromUserOfTutor = async (req, res) => {
+    try {
+        const [resutl] = await ModelReview.isThereAReviewFromUserOfTutor(req.params.idUser,req.params.idTutor);
+        res.status(200).json(resutl);
+    } catch (error) {
+        res.status(400).json({ fatal: error.message });
+    }
+};
 
-module.exports = { postReview, getAllReviewsFromTutor, getUserFromId };
+
+module.exports = { postReview, getAllReviewsFromTutor, getUserFromId, checkReviewFromUserOfTutor };

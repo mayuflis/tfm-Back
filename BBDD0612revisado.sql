@@ -140,6 +140,7 @@ DROP TABLE IF EXISTS `reviews`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reviews` (
   `id_reviews` int NOT NULL AUTO_INCREMENT,
+  `title_opinion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `opinions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `recommendations` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `teachers_id_teachers` int NOT NULL,
@@ -157,7 +158,14 @@ CREATE TABLE `reviews` (
 
 LOCK TABLES `reviews` WRITE;
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
-INSERT INTO `reviews` VALUES (7,'Gran profesor, muy claro en sus explicaciones.','Recomiendo sus clases a todos.',1,4.5,1,'2023-12-05 19:10:59','2023-12-05 20:10:59'),(8,'Excelente profesional, sus clases son dinámicas.','Sus clases han mejorado mi comprensión.',2,4.7,2,'2023-12-05 19:10:59','2023-12-05 20:10:59'),(9,'Muy buen docente, tiene mucha paciencia.','Me ha ayudado mucho en mi aprendizaje.',3,4.2,7,'2023-12-05 19:10:59','2023-12-05 20:10:59'),(10,'El mejor profesor que he tenido, explica genial.','Sus clases son muy entretenidas.',4,4.9,9,'2023-12-05 19:10:59','2023-12-05 20:10:59'),(11,'Me encantan sus clases, aprendo mucho.','Definitivamente tomaré más clases con él.',20,4.6,11,'2023-12-05 19:10:59','2023-12-05 20:10:59'),(12,'Buen profesor, comprometido con su enseñanza.','Recomiendo sus clases a todos.',21,4.4,12,'2023-12-05 19:10:59','2023-12-05 20:10:59');
+INSERT INTO `reviews` 
+VALUES 
+(7,'Explica claro','Gran profesor, muy claro en sus explicaciones.','Recomiendo sus clases a todos.',1,4.5,1,'2023-12-05 19:10:59','2023-12-05 20:10:59'),
+(8,'Clases dinámicas','Excelente profesional, sus clases son dinámicas.','Sus clases han mejorado mi comprensión.',2,4.7,2,'2023-12-05 19:10:59','2023-12-05 20:10:59'),
+(9,'Tiene paciencia','Muy buen docente, tiene mucha paciencia.','Me ha ayudado mucho en mi aprendizaje.',3,4.2,7,'2023-12-05 19:10:59','2023-12-05 20:10:59'),
+(10,'Explica genial','El mejor profesor que he tenido, explica genial.','Sus clases son muy entretenidas.',4,4.9,9,'2023-12-05 19:10:59','2023-12-05 20:10:59'),
+(11,'Aprendí bastante','Me encantan sus clases, aprendo mucho.','Definitivamente tomaré más clases con él.',20,4.6,11,'2023-12-05 19:10:59','2023-12-05 20:10:59'),
+(12,'Muy comprometido','Buen profesor, comprometido con su enseñanza.','Recomiendo sus clases a todos.',21,4.4,12,'2023-12-05 19:10:59','2023-12-05 20:10:59');
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 UNLOCK TABLES;
 

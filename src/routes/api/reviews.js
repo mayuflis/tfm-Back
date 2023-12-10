@@ -5,5 +5,6 @@ const ControllerReviews = require("../../controller/reviews.controller");
 router.post("/insertreview", ControllerReviews.postReview);
 router.get("/selectallreviewsfromtutor/:id", ControllerReviews.getAllReviewsFromTutor);
 router.get("/getuserfromid/:id", ControllerReviews.getUserFromId);
+router.get("/isThereAReviewFromUserOfTutor/:idUser/:idTutor", ControllerReviews.checkReviewFromUserOfTutor);
 
 module.exports = router;
