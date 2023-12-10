@@ -148,11 +148,7 @@ CREATE TABLE `reviews` (
   `users_idusers` int NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_reviews`),
-  KEY `fk_reviews_teachers1_idx` (`teachers_id_teachers`),
-  KEY `fk_reviews_users1_idx` (`users_idusers`),
-  CONSTRAINT `fk_reviews_teachers1` FOREIGN KEY (`teachers_id_teachers`) REFERENCES `teachers` (`id_teachers`),
-  CONSTRAINT `fk_reviews_users1` FOREIGN KEY (`users_idusers`) REFERENCES `users` (`idusers`)
+  PRIMARY KEY (`id_reviews`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
