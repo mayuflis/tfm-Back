@@ -79,72 +79,22 @@ const getTeacherByUserId = (userId) => {
   return db.query(
     `
     SELECT
-    (SELECT subjects.name
-     FROM subjects
-     JOIN class AS cl_subject ON cl_subject.subjects_idsubject = subjects.idsubjects
-     WHERE cl_subject.users_idusers = ?) AS subject_name,
-    (SELECT u.name
-     FROM users AS u
-     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
-     WHERE u.idusers = (
-         SELECT users_idusers
-         FROM teachers
-         WHERE id_teachers = (
-             SELECT teachers_id_teachers
-             FROM class
-             WHERE users_idusers =?
-         )
-     )) AS user_name,
-         (SELECT u.idusers
-     FROM users AS u
-     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
-     WHERE u.idusers = (
-         SELECT users_idusers
-         FROM teachers
-         WHERE id_teachers = (
-             SELECT teachers_id_teachers
-             FROM class
-             WHERE users_idusers = ?
-         )
-     )) AS idusers,
-    (SELECT u.last_name
-     FROM users AS u
-     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
-     WHERE u.idusers = (
-         SELECT users_idusers
-         FROM teachers
-         WHERE id_teachers = (
-             SELECT teachers_id_teachers
-             FROM class
-             WHERE users_idusers = ?
-         )
-     )) AS last_name,
-    (SELECT u.email
-     FROM users AS u
-     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
-     WHERE u.idusers = (
-         SELECT users_idusers
-         FROM teachers
-         WHERE id_teachers = (
-             SELECT teachers_id_teachers
-             FROM class
-             WHERE users_idusers = ?
-         )
-     )) AS email,
-    (SELECT c.mobile
-     FROM users AS u
-     INNER JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
-     WHERE u.idusers = (
-         SELECT users_idusers
-         FROM teachers
-         WHERE id_teachers = (
-             SELECT teachers_id_teachers
-             FROM class
-             WHERE users_idusers = ?
-         )
-     )) AS mobile
+  t.id_teachers,
+  u.idusers,
+  u.name AS teacher_name,
+  u.last_name AS teacher_last_name,
+  u.email AS teacher_email,
+  c.mobile AS teacher_mobile,
+  s.name AS subject_name
+FROM users AS u
+JOIN teachers AS t ON u.idusers = t.users_idusers
+JOIN class AS cl ON t.id_teachers = cl.teachers_id_teachers
+JOIN subjects AS s ON cl.subjects_idsubject = s.idsubjects
+JOIN users AS student ON cl.users_idusers = student.idusers
+JOIN contacts AS c ON u.contacts_idcontacts = c.idcontacts
+WHERE student.idusers =?
   `,
-    [userId, userId, userId, userId, userId, userId]
+    [userId]
   );
 };
 
@@ -169,7 +119,10 @@ const selectBasicProfileInfo = (userId) => {
   );
 };
 
-const updateUserById = (userId, { name, last_name, birthday, image, name_province, mobile, gender }) => {
+const updateUserById = (
+  userId,
+  { name, last_name, birthday, image, name_province, mobile, gender }
+) => {
   `UPDATE users
   SET
   users.name = ?,
@@ -191,11 +144,9 @@ gender_idgender = (
     FROM gender
     WHERE gender = ?
   )
-WHERE idusers = ?;`, [name, last_name, birthday, image, name_province, mobile, gender, userId]
-
-
-
-}
+WHERE idusers = ?;`,
+    [name, last_name, birthday, image, name_province, mobile, gender, userId];
+};
 
 module.exports = {
   getTeacherByUserId,
@@ -208,5 +159,5 @@ module.exports = {
   selectPhone,
   selectEmailToIdUsers,
   selectBasicProfileInfo,
-  updateUserById
+  updateUserById,
 };
