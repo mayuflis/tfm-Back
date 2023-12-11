@@ -153,6 +153,11 @@ const selectAboutMeInfoById = (userId) => {
     WHERE users.role = "teacher" AND t.validate=1 AND users.idusers = ?`, [userId])
 }
 
+const selectStudentInfoById = (userId) => {
+  return db.query(`SELECT u.idusers, st.aboutMe, st.myInterests FROM studentsdecriptions st
+JOIN users u ON st.users_idusers = u.idusers WHERE u.role='student' AND u.idusers=? ;`, [userId])
+}
+
 const updateAboutMe = (userId, { description_prof, title_prof, description_class }) => {
   return db.query(`
     UPDATE teachers t
@@ -168,6 +173,17 @@ const updateAboutMe = (userId, { description_prof, title_prof, description_class
 
 }
 
+const updateAboutMeStudent = (userId, { aboutMe, myInterests }) => {
+  return db.query(`
+    UPDATE studentsdecriptions st
+    SET st.aboutMe = ?, 
+        st.myInterests = ?
+    WHERE st.users_idusers = (SELECT u.idusers 
+                            FROM users u 
+                            WHERE u.idusers = ? 
+                              AND u.role = 'student')`, [aboutMe, myInterests, userId])
+}
+
 module.exports = {
   getTeacherByUserId,
   insertUser,
@@ -181,5 +197,7 @@ module.exports = {
   selectBasicProfileInfo,
   updateUserById,
   selectAboutMeInfoById,
-  updateAboutMe
+  selectStudentInfoById,
+  updateAboutMe,
+  updateAboutMeStudent
 };

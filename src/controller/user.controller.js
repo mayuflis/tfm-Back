@@ -171,10 +171,33 @@ const getAboutMeInfo = async (req, res) => {
     res.status(500).json({ fatal_error: error.message })
   }
 }
+
+const getStudentAboutMe = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const [info] = await ModelUser.selectStudentInfoById(userId)
+
+    if (info[0] === undefined) {
+      res.json({ "error": "no se encuentra ningun estudiante con este id" })
+    }
+    res.json(info[0])
+  } catch (error) {
+    res.status(500).json({ fatal_error: error.message })
+  }
+}
 const updateAboutMeInfo = async (req, res) => {
   try {
     const { userId } = req.params;
     const [updateAboutMe] = await ModelUser.updateAboutMe(userId, req.body)
+    res.json(updateAboutMe)
+  } catch (error) {
+    res.status(500).json({ fatal_error: error.message })
+  }
+}
+const updateAboutMeStudent = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const [updateAboutMe] = await ModelUser.updateAboutMeStudent(userId, req.body)
     res.json(updateAboutMe)
   } catch (error) {
     res.status(500).json({ fatal_error: error.message })
@@ -190,5 +213,7 @@ module.exports = {
   getBasicProfileInfo,
   updateUser,
   getAboutMeInfo,
-  updateAboutMeInfo
+  getStudentAboutMe,
+  updateAboutMeInfo,
+  updateAboutMeStudent
 };
