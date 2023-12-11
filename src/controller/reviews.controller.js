@@ -37,5 +37,25 @@ const checkReviewFromUserOfTutor = async (req, res) => {
     }
 };
 
+const checkIfStudentHasReceivedAtLeastOneClassWithTutor = async (req, res) => {
+    try {
+        const [resutl] = await ModelReview.isThereAtLeastOneClassInCommon(req.params.idUser,req.params.idTutor);
+        res.status(200).json(resutl);
+    } catch (error) {
+        res.status(400).json({ fatal: error.message });
+    }
+}
 
-module.exports = { postReview, getAllReviewsFromTutor, getUserFromId, checkReviewFromUserOfTutor };
+const getTutorIdFromUserId = async (req, res) => {
+    try {
+        const [resutl] = await ModelReview.getTutorIdFromUserId(req.params.idUser);
+        console.log("result getTutorIdFromUserId: ",resutl);
+        res.status(200).json(resutl[0].id_teachers);
+    } catch (error) {
+        res.status(400).json({ fatal: error.message });
+    }
+}
+
+
+
+module.exports = { postReview, getAllReviewsFromTutor, getUserFromId, checkReviewFromUserOfTutor, checkIfStudentHasReceivedAtLeastOneClassWithTutor,getTutorIdFromUserId };
