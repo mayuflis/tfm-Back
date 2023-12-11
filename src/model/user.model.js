@@ -170,6 +170,7 @@ const selectBasicProfileInfo = (userId) => {
 };
 
 const updateUserById = (userId, { name, last_name, birthday, image, name_province, mobile, gender }) => {
+  return db.query(
   `UPDATE users
   SET
   users.name = ?,
@@ -191,7 +192,7 @@ gender_idgender = (
     FROM gender
     WHERE gender = ?
   )
-WHERE idusers = ?;`, [name, last_name, birthday, image, name_province, mobile, gender, userId]
+WHERE idusers = ?;`, [name, last_name, birthday, image, name_province, mobile, gender, userId]);
 
 
 

@@ -9,7 +9,7 @@ const {
 router.use("/subjects", require("./api/subjects"));
 router.use("/filter", require("./api/filter"));
 router.use("/users", require("./api/users"));
-
+router.use("/class", require("./api/Class/class"))
 router.use("/tutor-control-panel", require("./api/tutor-control-panel"));
 
 router.use("/webPublic", require("./api/webPublic"));
