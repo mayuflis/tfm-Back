@@ -109,7 +109,7 @@ const getUserById = (userId) => {
 
 const selectBasicProfileInfo = (userId) => {
   return db.query(
-    `SELECT users.name, users.last_name, users.birthday, users.image, province.name_province, contacts.mobile, gender.gender
+    `SELECT users.idusers, users.name, users.last_name, users.birthday, users.image, province.name_province, contacts.mobile, gender.gender
   FROM users
   JOIN province ON users.province_idprovince = province.idprovince
   JOIN contacts ON users.contacts_idcontacts = contacts.idcontacts
@@ -119,11 +119,9 @@ const selectBasicProfileInfo = (userId) => {
   );
 };
 
-const updateUserById = (
-  userId,
-  { name, last_name, birthday, image, name_province, mobile, gender }
-) => {
-  `UPDATE users
+
+const updateUserById = (userId, { name, last_name, birthday, image, name_province, mobile, gender }) => {
+  return db.query(`UPDATE users
   SET
   users.name = ?,
     users.last_name = ?,
@@ -144,9 +142,31 @@ gender_idgender = (
     FROM gender
     WHERE gender = ?
   )
-WHERE idusers = ?;`,
-    [name, last_name, birthday, image, name_province, mobile, gender, userId];
-};
+WHERE idusers = ?;`, [name, last_name, birthday, image, name_province, mobile, gender, userId]
+  )
+}
+
+const selectAboutMeInfoById = (userId) => {
+  return db.query(
+    `SELECT users.idusers, users.name, t.description_prof, t.title_prof, t.description_class FROM users
+    JOIN teachers t ON users.idusers = t.users_idusers 
+    WHERE users.role = "teacher" AND t.validate=1 AND users.idusers = ?`, [userId])
+}
+
+const updateAboutMe = (userId, { description_prof, title_prof, description_class }) => {
+  return db.query(`
+    UPDATE teachers t
+    SET t.description_prof = ?, 
+        t.title_prof = ?, 
+        t.description_class = ?
+    WHERE t.users_idusers = (SELECT u.idusers 
+                            FROM users u 
+                            WHERE u.idusers = ? 
+                              AND u.role = 'teacher' 
+                              AND t.validate = 1);
+  `, [description_prof, title_prof, description_class, userId])
+
+}
 
 module.exports = {
   getTeacherByUserId,
@@ -160,4 +180,6 @@ module.exports = {
   selectEmailToIdUsers,
   selectBasicProfileInfo,
   updateUserById,
+  selectAboutMeInfoById,
+  updateAboutMe
 };

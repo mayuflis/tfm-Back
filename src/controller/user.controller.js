@@ -152,13 +152,34 @@ const updateUser = async (req, res) => {
   try {
     const { userId } = req.params
     const [updatedUser] = await ModelUser.updateUserById(userId, req.body)
-    console.log(req.body)
-    res.json(updatedUser);  // Imprime la respuesta en la consola para verificar el formato
+    res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 }
 
+const getAboutMeInfo = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const [info] = await ModelUser.selectAboutMeInfoById(userId)
+
+    if (info[0] === undefined) {
+      res.json({ "error": "no se encuentra ningun profesor validado con este id" })
+    }
+    res.json(info[0])
+  } catch (error) {
+    res.status(500).json({ fatal_error: error.message })
+  }
+}
+const updateAboutMeInfo = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const [updateAboutMe] = await ModelUser.updateAboutMe(userId, req.body)
+    res.json(updateAboutMe)
+  } catch (error) {
+    res.status(500).json({ fatal_error: error.message })
+  }
+}
 module.exports = {
   register,
   login,
@@ -167,5 +188,7 @@ module.exports = {
   getUserById,
   validateTokenFront,
   getBasicProfileInfo,
-  updateUser
+  updateUser,
+  getAboutMeInfo,
+  updateAboutMeInfo
 };
