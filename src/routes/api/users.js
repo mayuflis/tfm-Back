@@ -14,9 +14,21 @@ router.get('/:userId/teacher-info', usersController.getTeacherByUserId);
 //Ruta para obtener los datos de usuario
 router.get('/:userId', usersController.getUserById);
 //Ruta para obtener informacion del perfil
-router.get('/myprofile/:userId', usersController.getBasicProfileInfo);
+router.get('/profile/:userId', usersController.getBasicProfileInfo);
 //Ruta para editar el perfil
 router.put('/profile/:userId', usersController.updateUser);
+//Ruta para obtener la info de sobre mi
+router.get('/profile/tutor/aboutme/:userId', usersController.getAboutMeInfo)
+//Ruta para actualizar la informacion de sobre mi
+router.put('/profile/tutor/aboutme/:userId', usersController.updateAboutMeInfo);
+//Ruta para obtener la info de sobre mi
+router.get('/profile/student/aboutme/:userId', usersController.getStudentAboutMe)
+//Ruta para actualizar la informacion de sobre mi
+router.put('/profile/student/aboutme/:userId', usersController.updateAboutMeStudent);
+
+
+router.put('/profile/aboutme/:userId', usersController.updateAboutMeInfo);
+
 
 //Validación del token
 router.post("/validateToken", UserController.validateTokenFront);
