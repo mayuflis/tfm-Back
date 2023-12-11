@@ -40,14 +40,26 @@ const selectUserFromId = (userId) => {
 //sirve para revisar si un usuario no ha escrito una review a un tutor hasta el momento
 const isThereAReviewFromUserOfTutor = (userId, tutorId) => {
     console.log(userId,tutorId);
-    const sql = 'SELECT * FROM reviews WHERE teachers_id_teachers = ? AND users_idusers = ?';
+    const sql = 'SELECT * FROM reviews WHERE  users_idusers = ? AND teachers_id_teachers = ?';
     return db.query(sql, [userId, tutorId])
 };
 
+//sirve para revisar si un usuario student/alumno ha tenido al menos una clase con un tutor
+const isThereAtLeastOneClassInCommon = (userId, tutorId) => {
+    const sql = 'SELECT * FROM class WHERE users_idusers = ? AND teachers_id_teachers = ?';
+    return db.query(sql, [userId,tutorId])
+}
+
+const getTutorIdFromUserId = (userId)=> {
+    const sql = 'SELECT * FROM teachers WHERE users_idusers = ?';
+    return db.query(sql, [userId])
+}
 
 module.exports = {
     insertReview,
     selectAllReviewsFromTutor,
     selectUserFromId,
-    isThereAReviewFromUserOfTutor
+    isThereAReviewFromUserOfTutor,
+    isThereAtLeastOneClassInCommon,
+    getTutorIdFromUserId
 };
