@@ -21,12 +21,14 @@ const getSubjectsByTeacherId = (teacherId) => {
   );
 };
 
-const insertSubjectByTeacher = (teacherId, { hourly_rate, level, free_classl, subject_name }) => {
-  return db.query(` INSERT INTO teachers_has_subjects (subjects_idsubjects, teachers_id_teachers, hourly_rate, level, free_classl)
+const insertSubjectByTeacher = (teacherId, { hourly_rate, level, free_classl, name }) => {
+  return db.query(`
+    INSERT INTO teachers_has_subjects (subjects_idsubjects, teachers_id_teachers, hourly_rate, level, free_classl)
     SELECT s.idsubjects, t.id_teachers, ?, ?, ?
     FROM subjects AS s
     JOIN teachers AS t ON t.users_idusers = ?
-    WHERE s.name = ?;`, [hourly_rate, level, free_classl, teacherId, subject_name])
+    WHERE s.name = ?;
+  `, [hourly_rate, level, free_classl, teacherId, name]);
 }
 
 module.exports = {

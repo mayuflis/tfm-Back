@@ -21,14 +21,17 @@ const getSubjectsByTeacherId = async (req, res) => {
 
 const postSubject = async (req, res) => {
   try {
-    const [subject] = await SubjectsModel.insertSubjectByTeacher(req.body)
+    const { userId } = req.params;
+    const subjectData = req.body;
+    const teacherId = userId;
+    const [subject] = await SubjectsModel.insertSubjectByTeacher(teacherId, subjectData);
     res.json(subject)
-    console.log(subject)
-  }
-  catch (error) {
+    console.log(subject);
+  } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
+};
+
 
 module.exports = {
   getSubjectsByTeacherId,
