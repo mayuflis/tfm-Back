@@ -6,7 +6,7 @@ router.get('/:teacherId/subjects', subjectsController.getSubjectsByTeacherId);
 //To get all subjects
 router.get('/', subjectsController.getAllSubjects)
 //Add subject
-router.post('/', subjectsController.postSubject)
+router.post('/:userId', subjectsController.postSubject)
 
 
 
