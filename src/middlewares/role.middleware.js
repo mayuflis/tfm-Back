@@ -1,7 +1,7 @@
 const checkRoleTeachers = (req, res, next) => {
   // Verifica si el usuario tiene el rol de estudiante o administrador
 
-  if (req.user[0].role === "students" || req.user[0].role === "admin") {
+  if (req.user[0].role === "students") {
     return res.status(403).json({ fatal: "No eres profesor" });
   }
 

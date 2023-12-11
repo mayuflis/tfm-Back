@@ -153,7 +153,19 @@ where u.idusers=?`,
     [idUser]
   );
 };
+const getNoValidateTeachers = () => {
+  return db.query(`select u.name,u.last_name,c.mobile,u.email,t.id_teachers  from users as u 
+join teachers as t on t.users_idusers=u.idusers
+join contacts as c on c.idcontacts=u.contacts_idcontacts
+where t.validate=0`);
+};
 
+const updateTeachers = (idTeacher) => {
+  return db.query(
+    `update teachers set validate=1 where teachers.id_teachers=?`,
+    [idTeacher]
+  );
+};
 module.exports = {
   selectAllTeachers,
   selectTeacherById,
@@ -164,4 +176,6 @@ module.exports = {
   selectInfoTeachersFromUsers,
   selectInfoTeacherById,
   selectListOfClass,
+  getNoValidateTeachers,
+  updateTeachers,
 };

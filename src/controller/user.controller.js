@@ -11,7 +11,7 @@ const register = async (req, res) => {
     req.body.provincia = parseInt(req.body.provincia);
     try {
       //Validación de los datos entrantes
-      await SchemaUser.registerValidate(req.body);
+      //await SchemaUser.registerValidate(req.body);
     } catch (error) {
       return res
         .status(400)
@@ -140,69 +140,74 @@ const validateTokenFront = async (req, res) => {
 
 const getBasicProfileInfo = async (req, res) => {
   try {
-    const { userId } = req.params
-    const [user] = await ModelUser.selectBasicProfileInfo(userId)
-    res.json(user[0])
+    const { userId } = req.params;
+    const [user] = await ModelUser.selectBasicProfileInfo(userId);
+    res.json(user[0]);
   } catch (error) {
-    res.json({ fatal: error.message })
+    res.json({ fatal: error.message });
   }
-}
+};
 
 const updateUser = async (req, res) => {
   try {
-    const { userId } = req.params
-    const [updatedUser] = await ModelUser.updateUserById(userId, req.body)
+    const { userId } = req.params;
+    const [updatedUser] = await ModelUser.updateUserById(userId, req.body);
     res.json(updatedUser);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}
+};
 
 const getAboutMeInfo = async (req, res) => {
   try {
-    const { userId } = req.params
-    const [info] = await ModelUser.selectAboutMeInfoById(userId)
+    const { userId } = req.params;
+    const [info] = await ModelUser.selectAboutMeInfoById(userId);
 
     if (info[0] === undefined) {
-      res.json({ "error": "no se encuentra ningun profesor validado con este id" })
+      res.json({
+        error: "no se encuentra ningun profesor validado con este id",
+      });
     }
-    res.json(info[0])
+    res.json(info[0]);
   } catch (error) {
-    res.status(500).json({ fatal_error: error.message })
+    res.status(500).json({ fatal_error: error.message });
   }
-}
+};
 
 const getStudentAboutMe = async (req, res) => {
   try {
-    const { userId } = req.params
-    const [info] = await ModelUser.selectStudentInfoById(userId)
+    const { userId } = req.params;
+    const [info] = await ModelUser.selectStudentInfoById(userId);
 
     if (info[0] === undefined) {
-      res.json({ "error": "no se encuentra ningun estudiante con este id" })
+      res.json({ error: "no se encuentra ningun estudiante con este id" });
     }
-    res.json(info[0])
+    res.json(info[0]);
   } catch (error) {
-    res.status(500).json({ fatal_error: error.message })
+    res.status(500).json({ fatal_error: error.message });
   }
-}
+};
 const updateAboutMeInfo = async (req, res) => {
   try {
     const { userId } = req.params;
-    const [updateAboutMe] = await ModelUser.updateAboutMe(userId, req.body)
-    res.json(updateAboutMe)
+    const [updateAboutMe] = await ModelUser.updateAboutMe(userId, req.body);
+    res.json(updateAboutMe);
   } catch (error) {
-    res.status(500).json({ fatal_error: error.message })
+    res.status(500).json({ fatal_error: error.message });
   }
-}
+};
 const updateAboutMeStudent = async (req, res) => {
   try {
     const { userId } = req.params;
-    const [updateAboutMe] = await ModelUser.updateAboutMeStudent(userId, req.body)
-    res.json(updateAboutMe)
+    const [updateAboutMe] = await ModelUser.updateAboutMeStudent(
+      userId,
+      req.body
+    );
+    res.json(updateAboutMe);
   } catch (error) {
-    res.status(500).json({ fatal_error: error.message })
+    res.status(500).json({ fatal_error: error.message });
   }
-}
+};
 module.exports = {
   register,
   login,
@@ -215,5 +220,5 @@ module.exports = {
   getAboutMeInfo,
   getStudentAboutMe,
   updateAboutMeInfo,
-  updateAboutMeStudent
+  updateAboutMeStudent,
 };

@@ -113,6 +113,25 @@ const listOfClass = async (req, res) => {
     res.status(400).json({ fatal: error.message });
   }
 };
+
+const getNoValidate = async (req, res) => {
+  try {
+    const [listOfTeachers] = await ModelTeachers.getNoValidateTeachers();
+    res.status(200).json(listOfTeachers);
+  } catch (error) {
+    res.status(400).json({ fatal: error.message });
+  }
+};
+
+const updateState = async (req, res) => {
+  try {
+    const { idTeacher } = req.params;
+    const [listOfTeachers] = await ModelTeachers.updateTeachers(idTeacher);
+    res.status(200).json(listOfTeachers);
+  } catch (error) {
+    res.status(400).json({ fatal: error.message });
+  }
+};
 module.exports = {
   getAllTeachers,
   getTeacherById,
@@ -123,4 +142,6 @@ module.exports = {
   getAllTeachersInfo,
   getTeacherInfoById,
   listOfClass,
+  getNoValidate,
+  updateState,
 };
